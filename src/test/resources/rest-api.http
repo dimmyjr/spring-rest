@@ -1,0 +1,23 @@
+POST http://localhost:8080/rest/bankslip
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "due_date": "2018-10-25",
+  "total_in_cents" : "100" ,
+  "customer" : "Trillian Company"
+}
+
+
+###
+
+GET http://localhost:8080/rest/bankslip/131593af-8292-4dba-b89c-ffcbfa18ee75
+
+
+###
+
+DELETE http://localhost:8080/rest/bankslip/131593af-8292-4dba-b89c-ffcbfa18ee75
+
+
+###

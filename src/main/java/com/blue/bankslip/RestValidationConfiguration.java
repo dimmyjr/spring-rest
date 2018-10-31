@@ -7,13 +7,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.core.event.ValidatingRepositoryEventListener;
-import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
+import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 
 @Configuration
-public class RestValidationConfiguration implements RepositoryRestConfigurer {
+public class RestValidationConfiguration extends RepositoryRestConfigurerAdapter {
 
     @Bean
     @Primary
@@ -29,10 +29,13 @@ public class RestValidationConfiguration implements RepositoryRestConfigurer {
         validatingListener.addValidator("beforeSave", validator);
     }
 
+
     @Override
     public void configureRepositoryRestConfiguration(final RepositoryRestConfiguration config) {
         config.exposeIdsFor(Bankslip.class);
         config.setReturnBodyOnCreate(Boolean.TRUE);
         config.setReturnBodyOnUpdate(Boolean.TRUE);
     }
+
+
 }

@@ -19,22 +19,10 @@ public interface BankslipRepository extends CrudRepository<Bankslip, UUID> {
     void pay(final LocalDate paymentDate, UUID id);
 
     @Override
-    @Query("update #{#entityName} e set e.status='CANCELED' where e.id=?1")
+    @Query("update #{#entityName} e set e.status='CANCELED' where e.id=?1 AND e.status='PENDING'")
     @Modifying
-    void deleteById(UUID uuid);
+    void delete(UUID uuid);
 
-    @Override
-    default void delete(final Bankslip entity) {
-        deleteById(entity.getId());
-    }
-
-    @RestResource(exported = false)
-    @Override
-    void deleteAll(Iterable<? extends Bankslip> iterable);
-
-    @RestResource(exported = false)
-    @Override
-    void deleteAll();
 }
 
 
