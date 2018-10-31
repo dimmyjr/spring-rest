@@ -4,6 +4,16 @@ This project aims to become the base of reference architecture for the developme
 
 The application is based on bankslip management. CREATING, LISTING, PAYING AND CANCELING.
 
+### Frameworks:
+- Spring Boot
+- Spring Data 
+- Spring Data REST
+- Swagger
+- Validation
+- Lombok
+- Jackson
+- H2 Database
+
 ## Build
 
 Use the package manager [maven](https://maven.apache.org/) to build.
