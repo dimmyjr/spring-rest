@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 @Data
 @RequiredArgsConstructor
-public class PayInput {
+class PayInput {
     @JsonProperty(value = "payment_date")
     private LocalDate paymentDate;
 }

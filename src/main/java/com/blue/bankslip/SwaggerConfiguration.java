@@ -14,6 +14,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 @Import({springfox.documentation.spring.data.rest.configuration.SpringDataRestConfiguration.class})
 public class SwaggerConfiguration {
+    @SuppressWarnings("Guava")
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)

@@ -1,7 +1,6 @@
 package com.blue.bankslip.controller;
 
 import com.blue.bankslip.URLMapping;
-import com.blue.bankslip.domain.Bankslip;
 import com.blue.bankslip.repository.BankslipRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
