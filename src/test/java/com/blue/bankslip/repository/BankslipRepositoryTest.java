@@ -2,7 +2,7 @@ package com.blue.bankslip.repository;
 
 import com.blue.bankslip.BankApplication;
 import com.blue.bankslip.domain.Bankslip;
-import org.apache.tomcat.jni.Local;
+import com.blue.bankslip.domain.BankslipStatus;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,12 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.core.IsNot.not;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -59,7 +64,7 @@ public class BankslipRepositoryTest {
 
     @Test
     public void shouldGetBankslip() throws Exception {
-        final String customer = "Joselito Moraes";
+        final String customer = "Joselito Moraes Get";
         final UUID uuid = createBankslip(customer, LocalDate.now());
 
         mvc.perform(get("/rest/bankslip/" + uuid.toString())
@@ -73,8 +78,8 @@ public class BankslipRepositoryTest {
 
     @Test
     public void shouldGetBankslipWithLateMinus10Days() throws Exception {
-        final String customer = "Joselito Moraes";
-        final UUID uuid = createBankslip(customer, LocalDate.now().minusDays(9) );
+        final String customer = "Joselito Moraes 5";
+        final UUID uuid = createBankslip(customer, LocalDate.now().minusDays(9));
 
         mvc.perform(get("/rest/bankslip/" + uuid.toString())
                 .contentType(MediaType.APPLICATION_JSON))
@@ -86,8 +91,8 @@ public class BankslipRepositoryTest {
 
     @Test
     public void shouldGetBankslipWithLateMore10Days() throws Exception {
-        final String customer = "Joselito Moraes";
-        final UUID uuid = createBankslip(customer, LocalDate.now().minusDays(11) );
+        final String customer = "Joselito Moraes 11";
+        final UUID uuid = createBankslip(customer, LocalDate.now().minusDays(11));
 
         mvc.perform(get("/rest/bankslip/" + uuid.toString())
                 .contentType(MediaType.APPLICATION_JSON))
@@ -99,12 +104,55 @@ public class BankslipRepositoryTest {
 
     @Test
     public void shouldNotGetBankslip() throws Exception {
-        final String customer = "Joselito Moraes";
         final UUID uuid = UUID.randomUUID();
 
         mvc.perform(get("/rest/bankslip/" + uuid.toString())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void shouldPayBankslip() throws Exception {
+        final String customer = "Joselito Moraes Pay";
+        final UUID uuid = createBankslip(customer, LocalDate.now());
+
+        mvc.perform(post("/rest/bankslip/" + uuid.toString() + "/payments")
+                .content("{\n" +
+                        "  \"payment_date\" : \"2018-10-30\"\n" +
+                        "}")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+
+        final Bankslip bankslip = repository.findOne(uuid);
+        assertThat(bankslip.getPaymentDate(), is(not(nullValue())));
+        assertThat(bankslip.getStatus(), equalTo(BankslipStatus.PAID));
+
+    }
+
+    @Test
+    public void shouldPayBankslipNotFound() throws Exception {
+        final UUID uuid = UUID.randomUUID();
+
+        mvc.perform(post("/rest/bankslip/" + uuid.toString() + "/payments")
+                .content("{\n" +
+                        "  \"payment_date\" : \"2018-10-30\"\n" +
+                        "}")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void shouldCancelBankslip() throws Exception {
+        final String customer = "Joselito Moraes Cancel";
+        final UUID uuid = createBankslip(customer, LocalDate.now());
+
+        mvc.perform(delete("/rest/bankslip/" + uuid.toString())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+
+        final Bankslip bankslip = repository.findOne(uuid);
+        assertThat(bankslip.getStatus(), equalTo(BankslipStatus.CANCELED));
+
     }
 
     private UUID createBankslip(final String customer, final LocalDate dueDate) {

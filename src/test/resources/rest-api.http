@@ -9,15 +9,12 @@ Content-Type: application/json
   "customer" : "Trillian Company"
 }
 
+###
+
+GET http://localhost:8080/rest/bankslip/5ad9dc07-2dcc-44c7-ae51-64e03b67b7be
 
 ###
 
-GET http://localhost:8080/rest/bankslip/131593af-8292-4dba-b89c-ffcbfa18ee75
-
-
-###
-
-DELETE http://localhost:8080/rest/bankslip/131593af-8292-4dba-b89c-ffcbfa18ee75
-
+DELETE http://localhost:8080/rest/bankslip/5ad9dc07-2dcc-44c7-ae51-64e03b67b7be
 
 ###
