@@ -1,8 +1,8 @@
 # SPRING REST
 
-This project aims to become the base of reference architecture for the development of "services" and "microservices". In it is gathered ways of working with the [Spring](https://spring.io/) that serves as the main frameworks. SWAGGER is also used to catalog services.
+This project aims to become the reference architecture for the development of "services" and "microservices". In it are gathered ways of working with [Spring](https://spring.io/) that serves as the main framework. SWAGGER is also used to catalog services.
 
-The application is based on bankslip management. CREATING, LISTING, PAYING AND CANCELING.
+The application is based on bankslip management. CREATING, LISTING, PAYING AND CANCELLING.
 
 ### Frameworks:
 - Spring Boot
@@ -24,7 +24,7 @@ mvn clean install
 
 ## Run
 
-For run this project.
+To run this project.
 
 ```bash
 mvn spring-boot:run
